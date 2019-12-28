@@ -1,17 +1,12 @@
 const env = require('dotenv').config();
 const Koa = require('koa');
 const body = require('koa-body');
-const Router = require('koa-router');
-const router = new Router();
+const router = require('./routes/index.js');
 
 const app = new Koa();
 app.use(body());
 
 //routes
-router.get('/', (ctx) => {
-  ctx.body = 'Hello World';
-})
-
 app.use(router.routes());
 app.use(router.allowedMethods());
 
