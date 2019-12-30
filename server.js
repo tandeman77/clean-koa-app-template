@@ -1,14 +1,18 @@
-const env = require('dotenv').config();
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 const Koa = require('koa');
-const body = require('koa-body');
-const router = require('./routes/index.js');
-
 const app = new Koa();
-app.use(body());
+const bodyParser = require('koa-body');
+app.use(bodyParser());
 
 //routes
-app.use(router.routes());
-app.use(router.allowedMethods());
+const indexRoutes = require('./routes/index.js');
+const authRoutes = require('./routes/auth.js');
+app.use(indexRoutes.routes());
+app.use(indexRoutes.allowedMethods());
+app.use(authRoutes.routes());
+app.use(authRoutes.allowedMethods());
 
 
 //initialise the app.
