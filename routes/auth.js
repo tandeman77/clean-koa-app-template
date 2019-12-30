@@ -1,4 +1,4 @@
-const Router = require('koa-router');
+const Router = require('@koa/router');
 const router = new Router({ prefix: '/auth' });
 const bcrypt = require('bcrypt');
 const { registerValidation, loginValidation } = require('../helpers/validations/authValidation');
@@ -56,11 +56,10 @@ router.post('/login', async (ctx) => {
     username: user.username,
     email: user.email
   }, process.env.TOKEN_SALT);
-  ctx.cookies.set('auth', token, {
-    maxAge: 43200000,
-    expires: Date.now() + 43200000
+  ctx.cookies.set('auth-token', token, {
+    // maxAge: 43200000,
+    // expires: Date.now() + 43200000
   });
-  ctx.body = token;
 });
 
 module.exports = router
