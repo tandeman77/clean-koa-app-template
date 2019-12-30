@@ -1,9 +1,6 @@
-const Router = require('@koa/router');
-const router = new Router();
+const compose = require('koa-compose');
+const authRoutes = require('./auth').routes();
+const homeRoutes = require('./home').routes();
+const privateRoutes = require('./privateRoutes').routes();
 
-//home page
-router.get('/', (ctx) => {
-  ctx.body = 'Hello World';
-})
-
-module.exports = router
+module.exports = compose([authRoutes, homeRoutes, privateRoutes]);

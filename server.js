@@ -8,15 +8,17 @@ app.use(bodyParser());
 
 //routes
 //require authntication for private route
-const indexRoutes = require('./routes/index.js');
-const authRoutes = require('./routes/auth.js');
-const privateRoutes = require('./routes/privateRoutes.js');
-app.use(indexRoutes.routes());
-app.use(indexRoutes.allowedMethods());
-app.use(authRoutes.routes());
-app.use(authRoutes.allowedMethods());
-app.use(privateRoutes.routes());
-app.use(privateRoutes.allowedMethods());
+// const indexRoutes = require('./routes/home.js');
+// const authRoutes = require('./routes/auth.js');
+// const privateRoutes = require('./routes/privateRoutes.js');
+// app.use(indexRoutes.routes());
+// app.use(indexRoutes.allowedMethods());
+// app.use(authRoutes.routes());
+// app.use(authRoutes.allowedMethods());
+// app.use(privateRoutes.routes());
+// app.use(privateRoutes.allowedMethods());
+const allRoutes = require('./routes/index');
+app.use(allRoutes);
 
 
 //initialise the app.
