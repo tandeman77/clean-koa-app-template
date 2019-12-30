@@ -2,8 +2,11 @@ const Router = require('koa-router');
 const router = new Router({ prefix: '/auth' });
 const bcrypt = require('bcrypt');
 const { registerValidation, loginValidation } = require('../helpers/validations/authValidation');
+const jwt = require('jsonwebtoken');
 
+//temporary user variable
 let Users = []
+
 //REGISTER ROUTE
 router.post('/register', async (ctx) => {
   if (ctx.request.body) {
@@ -12,6 +15,7 @@ router.post('/register', async (ctx) => {
   }
   const hashedPassword = await bcrypt.hash(ctx.request.body.password, 10);
   const user = {
+    _id: Users.length + 1,
     username: ctx.request.body.username,
     password: hashedPassword,
     email: ctx.request.body.email
@@ -43,9 +47,20 @@ router.post('/login', async (ctx) => {
   if (!passwordValidation) {
     ctx.body = 'password is wrong';
     ctx.response.status = 400;
-  } else {
-    ctx.body = user;
+    return
   }
+
+  //login sucessful = return jwt
+  const token = jwt.sign({
+    _id: user._id,
+    username: user.username,
+    email: user.email
+  }, process.env.TOKEN_SALT);
+  ctx.cookies.set('auth', token, {
+    maxAge: 43200000,
+    expires: Date.now() + 43200000
+  });
+  ctx.body = token;
 });
 
 module.exports = router
